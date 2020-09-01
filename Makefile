@@ -27,7 +27,7 @@ DOCKER_OPTS := \
 			-v ~/.aws:/root/.aws \
 			-v /root/.ssh:/root/.ssh \
 			-v ~/.cache:/root/.cache \
-			-v /data:/data \
+			-v /mnt/e/data:/data \
 			-v /mnt/fsx/:/mnt/fsx \
 			-v /dev/null:/dev/raw1394 \
 			-v /tmp:/tmp \
@@ -67,16 +67,16 @@ docker-build:
 		-t ${DOCKER_IMAGE} .
 
 docker-start-interactive: docker-build
-	nvidia-docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} bash
+	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} bash
 
 docker-start-jupyter: docker-build
-	nvidia-docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} \
+	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
 		bash -c "jupyter notebook --port=8888 -ip=0.0.0.0 --allow-root --no-browser"
 
 docker-run: docker-build
-	nvidia-docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} \
+	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
 		bash -c "${COMMAND}"
 
 docker-run-mpi: docker-build
-	nvidia-docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} \
+	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
 		bash -c "${MPI_CMD} ${COMMAND}"
