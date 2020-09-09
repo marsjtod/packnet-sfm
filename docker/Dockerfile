@@ -132,7 +132,8 @@ ENV PYTHONPATH="/workspace/dgp:$PYTHONPATH"
 RUN pip install wandb==0.8.21
 
 # Expose Port for jupyter (8888)
-EXPOSE 8888
+# Jtod
+EXPOSE 8882
 
 # create project workspace dir
 RUN mkdir -p /workspace/experiments

@@ -66,17 +66,17 @@ docker-build:
 		-f docker/Dockerfile \
 		-t ${DOCKER_IMAGE} .
 
-docker-start-interactive: docker-build
+docker-shell: docker-build
 	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} bash
 
-docker-start-jupyter: docker-build
+docker-jupyter: docker-build
 	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
-		bash -c "jupyter notebook --port=8888 -ip=0.0.0.0 --allow-root --no-browser"
+		bash -c "jupyter notebook --port=8882 --ip=0.0.0.0 --allow-root --no-browser"
 
 docker-run: docker-build
 	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
 		bash -c "${COMMAND}"
 
-docker-run-mpi: docker-build
-	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
-		bash -c "${MPI_CMD} ${COMMAND}"
+#docker-run-mpi: docker-build
+#	docker run --gpus all ${DOCKER_OPTS} ${DOCKER_IMAGE} \
+#		bash -c "${MPI_CMD} ${COMMAND}"
